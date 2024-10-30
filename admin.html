@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="adm.css">
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <!-- Firebase App (SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <title>admin dashboard</title>
+</head>
+<body>
+<input type="checkbox" id="menu-toggle">
+<div class="sidebar">
+        <div class="side-header">
+            <h3>New<span>talents</span>G</h3>
+        </div>
+        <div class="side-content">
+            <div class="profile">
+    <img id="user-image" style="display: grid; border-radius: 15px;">
+             </div>
+            </div>
+         <div class="side-menu">
+           <ul>
+             <li>
+                       <a href="" id="profile">
+                            <span class="las la-user-alt"></span>
+                            <small>Profile</small>
+                        </a>
+                    </li>
+             <li><a href="" id="dashboard" class="active">
+                            <span class="las la-home"></span>
+                            <small>Dashboard</small>
+                        </a></li>
+                        <li>
+                       <a href="" id="message">
+                            <span class="las la-envelope"></span>
+                            <small>Mailbox</small>
+                        </a>
+                    <li>
+            <a href="#" id="manage-users">
+                <span class="las la-users"></span>
+                <small>Manage users</small>
+            </a>
+        </li>
+                    
+                <li>
+    <a href="" id="manage-posts">
+        <span class="las la-blog"></span>
+        <small>Manage posts</small>
+    </a>
+</li>
+          <li>
+   <a href="" id="manage-folders">
+     <span class="las la-folder"></span>
+     <small>Manage folders</small>
+   </a>
+ </li>
+ <li>
+   <a href="" id="manage-ads">
+     <span class="las la-tv"></span>
+     <small>manage Ads</small>
+   </a>
+ </li>
+
+                     <li>
+  <a href="" id="create-Folder">
+   <span class="las la-folder-plus"></span>
+   <small>create folder</small>
+</a>
+ </li>
+   <li>
+  <a href="" id="create-post">
+   <span class="las la-plus"></span>
+   <small>create posts</small>
+</a>
+ </li>
+   <li>
+  <a href="" id="create-ads">
+   <span class="lab la-adn"></span>
+   <small>create ads</small>
+</a>
+ </li>
+           </ul>
+         </div>
+</div>
+
+
+        <div class="main-content">
+          <label for="menu-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                <div class="header-menu">
+                    <label for="">
+                        <span class="las la-search"></span>
+                    </label>
+                    
+                    <div class="notify-icon">
+                        <span class="las la-envelope" id="message"></span>
+                        <span class="notify">4</span>
+                    </div>
+                    
+                    <div class="notify-icon">
+                        <span class="las la-bell"></span>
+                        <span class="notify">3</span>
+                    </div>
+                    
+                   <div class="user">
+                  <a href="#">
+                <i class="fa fa-user"></i>
+                <span id="usernameDisplay">User Name</span>
+                  </a>
+                <button type="button" id="logoutButton">Logout</button>
+                    </div>
+                     
+        </div>
+        <div class="user-management" id="userTable">
+    <h1>Manage Users</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>username</th>
+          <th>phone Number</th>
+          <th>Whatsapp number</th>
+          <th>Role</th>
+          <th>Email</th>
+          <th>created-at</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aho urutonde rw'abakoresha ruzajyamo -->
+        <tr>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add User Modal -->
+
+    <div class="admin-content">
+             <h2 class="page-title">Manage posts</h2>
+        <div class="content">
+          
+            <table>
+               <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Folder id</th>
+              <th>createdAt</th>
+              <th>Images</th>
+              <th>CommentCount</th>
+              <th>Author</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+              <tbody>
+                <tr>
+                  
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+         <div class="topic-content" id="topic">
+           <h2 class="page-title">Manage folders</h2>
+            
+           <table>
+             <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Created-at</th>
+              <th>Post count</th>
+              <th>Actions</th>
+            
+            </tr>
+          </thead>
+           <tbody>
+              <tr>
+                
+              </tr>
+           </tbody>
+           </table>
+           
+         </div>
+          <div class="ads-content">
+             <h2 class="page-title">Manage Ads</h2>
+           
+      <div class="content">
+         <table id="ads">
+           <thead>
+             <tr>
+               <th>Ad</th>
+               <th>createdAt</th>
+               <th>Actions</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               
+             </tr>
+           </tbody>
+         </table>
+      </div>
+          </div>
+          <div class="profile-container">
+              <div class="profile-header">
+ <a href="#">
+                <i class="fa fa-user"></i>
+                <span id="usernameDisplay">User Name</span>
+                  </a>
+                
+
+        </div>
+        <div class="profile-details">
+           <h2 id="user-name"></h2>
+            <p><strong>Posts:</strong> <span id="post-count"></span></p>
+            <p><strong>Balance:</strong> <span id="balance"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Phone:</strong> <span id="phone"></span></p>
+        </div>
+
+        <div class="transaction">
+            <button id="withdraw-btn">Withdraw</button>
+            <button id="deposit-btn">Deposit</button>
+        </div>
+
+        <div class="profile-settings">
+            <button id="edit-profile-btn">Edit Profile</button>
+            <button id="settings-btn">Profile Settings</button>
+        </div>
+    </div>
+    <div class="mailbox">
+    <h2>Inbox</h2>
+    <div id="message-list"></div>
+    
+    <h2>reply</h2>
+    <textarea id="reply-message" placeholder="Andika igisubizo..."></textarea>
+    <button onclick="sendReply()">Send</button>
+</div>
+         
+             <!---- admin content ---->
+    <div class="ad-content ad">
+      <h2 class="page-title">Manage Folders</h2>
+        <div class="content">
+         <form id="postForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title" class="nb">Forder name: </label>
+                <input type="text" id="title" name="title" required placeholder="write title of folder....."></input>
+            </div>
+            <div class="form-group">
+                <label for="content" class="nb">forder description:</label>
+                <textarea id="content" name="content" required placeholder=" write description of folder...."></textarea>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        </div>
+    </div>
+         
+         <div class="editor-container">
+         
+         <div class="form-container">
+        <h2>WRITE YOUR STORY</h2>
+       <form id="posts" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="head" name="name" required placeholder="Title of your story...">
+    </div>
+
+    <div class="form-group">
+        <label for="post_content">Description:</label>
+        <textarea id="post" name="post_content" placeholder="Write your story..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="post_image">Cover picture:</label>
+        <input type="file" id="image" name="post_image" accept="image/*" required>
+    </div>
+
+    <select id="folderSelector">
+        <option value="">-- Choose a folder --</option>
+        <!-- Add options dynamically if needed -->
+    </select>
+
+    <div class="form-group">
+        <button type="submit" id="button">Publishing Post</button>
+    </div>
+</form>
+    </div>
+        </div>
+         
+         
+       <!-- Iyi niyo form yawe -->
+    <div class="writing-form">
+        <h2>Write Ads</h2>
+       <form id="adForm">
+    <label for="content">Advertising:</label>
+    <textarea id="ad" placeholder="write ads..." required></textarea>
+    <button type="submit">submit</button>
+</form>
+    </div>
+         
+         
+     <div class="dashboard">
+        <h6>welcome to Dashboard</h6>
+        
+        <div class="boxes">
+            <div class="box statistic">
+                <h5>Total posts</h5>
+                <p id="total-posts"></p>
+            </div>
+            
+            <div class="box top-posts">
+                <h5>Popular stories</h5>
+                <ul id="posts-comments">
+                    <!-- Urutonde rwa posts zifite comments nyinshi ruzashyirwa hano -->
+                </ul>
+            </div>
+            
+            <div class="box top-shares">
+                <h5>Top sharers</h5>
+                <ul id="top-sharers">
+                    <!-- Urutonde rw'abakora share ruzashyirwa hano -->
+                </ul>
+            </div>
+            
+            <div class="box subscribers">
+                <h5>Subscribers:</h5>
+                <ul id="subscribers-list">
+                    <!-- Urutonde rw'abakoresha subscribe ruzashyirwa hano -->
+                </ul>
+            </div>
+        </div>
+        
+        <div class="usage-graph">
+            <h5>Usage chart</h5>
+            <canvas id="usage-chart"></canvas>
+        </div>
+    </div>
+         
+           
+         
+         
+  <script src="adm.js"></script>
+  
+<script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+   import { getAuth,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+   import { getFirestore, doc, getDoc, updateDoc, deleteField, deleteDoc, setDoc, collection, getDocs,addDoc, serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+   import { getStorage, ref, uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+   const firebaseConfig = {
+       apiKey: "AIzaSyAvwNyhKiKFyI-r6MDDk7BH3iq7P61z594",
+       authDomain: "newtalents-a7c29.firebaseapp.com",
+       databaseURL: "https://newtalents-a7c29-default-rtdb.firebaseio.com",
+       projectId: "newtalents-a7c29",
+       storageBucket: "newtalents-a7c29.appspot.com",
+       messagingSenderId: "507408992610",
+       appId: "1:507408992610:web:05ce220a4cb4922de9843b"
+   };
+
+   const app = initializeApp(firebaseConfig);
+   const auth = getAuth(app);
+   const db = getFirestore(app);
+   const storage = getStorage(app);
+   // Baza Storage na Firestore
+
+
+   async function displayUsers() {
+       const userdateRef = doc(db, "userdate", "data");
+       const userdateSnapshot = await getDoc(userdateRef);
+
+       if (userdateSnapshot.exists()) {
+           const userData = userdateSnapshot.data();
+           const tableBody = document.querySelector(".user-management tbody");
+           tableBody.innerHTML = '';
+
+           for (let userId in userData) {
+               const user = userData[userId];
+               const row = document.createElement("tr");
+               row.innerHTML = `
+                   <td>${user.fName}</td>
+                   <td>${user.phoneNumber}</td>
+                   <td>${user.whatsAppNumber}</td>
+                   <td>${user.role}</td>
+                   <td>${user.email}</td>
+                   <td>${user.createdAt}</td>
+                   <td>
+                       <button class="edit-user-btn" data-id="${userId}">Edit</button>
+                       <button class="delete-user-btn" data-id="${userId}">Delete</button>
+                   </td>
+               `;
+               tableBody.appendChild(row);
+           }
+
+           document.querySelectorAll(".edit-user-btn").forEach(button => {
+               button.addEventListener("click", handleUserEdit);
+           });
+
+           document.querySelectorAll(".delete-user-btn").forEach(button => {
+               button.addEventListener("click", handleUserDelete);
+           });
+       } else {
+           console.log("No user data found.");
+       }
+   }
+
+   async function handleUserEdit(event) {
+       const userId = event.target.getAttribute('data-id');
+       const userdateRef = doc(db, "userdate", "data");
+       const userdateSnapshot = await getDoc(userdateRef);
+
+       if (userdateSnapshot.exists()) {
+           const userData = userdateSnapshot.data()[userId];
+           const newName = prompt("Edit Full Name", userData.fName);
+           const newPhoneNumber = prompt("Edit Phone Number", userData.phoneNumber);
+           const newWhatsAppNumber = prompt("Edit WhatsApp Number", userData.whatsAppNumber);
+           const newRole = prompt("Edit Role", userData.role);
+
+           await updateDoc(userdateRef, {
+               [`${userId}.fName`]: newName,
+               [`${userId}.phoneNumber`]: newPhoneNumber,
+               [`${userId}.whatsAppNumber`]: newWhatsAppNumber,
+               [`${userId}.role`]: newRole
+           });
+
+           displayUsers();
+       }
+   }
+
+   async function handleUserDelete(event) {
+       const userId = event.target.getAttribute('data-id');
+       const userdateRef = doc(db, "userdate", "data");
+
+       if (confirm("Are you sure you want to delete this user?")) {
+           await updateDoc(userdateRef, { [`${userId}`]: deleteField() });
+           displayUsers();
+       }
+   }
+
+   async function displayFolders() {
+  const foldersRef = collection(db, "folders");
+  const foldersSnapshot = await getDocs(foldersRef);
+  const tableBody = document.querySelector(".topic-content tbody");
+  tableBody.innerHTML = '';
+
+  // First, get all posts in the "posts" collection
+  const allPostsRef = collection(db, "posts");
+  const allPostsSnapshot = await getDocs(allPostsRef);
+  const allPosts = allPostsSnapshot.docs.map(post => post.data());
+
+  for (const doc of foldersSnapshot.docs) {
+    const folder = doc.data();
+    const folderId = doc.id; // Folder ID
+
+    // Filter posts that belong to this folder using JavaScript
+    const postsInFolder = allPosts.filter(post => post.folderId === folderId);
+    const postCount = postsInFolder.length; // Count the posts in this folder
+
+    // Creating a new row for each folder
+    const row = document.createElement("tr");
+    row.innerHTML = `
+           <td>${folder.title}</td>
+           <td>${folder.content}</td>
+           <td>${folder.createdAt}</td>
+           <td>${postCount}</td>  <!-- Displaying post count -->
+           <td>
+               <button class="edit-folder-btn" data-id="${folderId}">Edit</button>
+               <button class="delete-folder-btn" data-id="${folderId}">Delete</button>
+           </td>
+       `;
+    tableBody.appendChild(row);
+  }
+
+  // Adding event listeners for edit and delete buttons
+  document.querySelectorAll(".edit-folder-btn").forEach(button => {
+    button.addEventListener("click", handleFolderEdit);
+  });
+
+  document.querySelectorAll(".delete-folder-btn").forEach(button => {
+    button.addEventListener("click", handleFolderDelete);
+  });
+}
+
+   async function handleFolderDelete(event) {
+       const docId = event.target.dataset.id;
+       if (confirm("Are you sure you want to delete this folder?")) {
+           try {
+               await deleteDoc(doc(db, "folders", docId));
+               alert('Folder deleted successfully!');
+               displayFolders();
+           } catch (error) {
+               console.error('Error deleting folder: ', error);
+               alert('Error deleting folder: ' + error.message);
+           }
+       }
+   }
+
+   async function handleFolderEdit(event) {
+       const docId = event.target.dataset.id;
+       const title = prompt("Enter the new title: ");
+       const content = prompt("Enter the new content: ");
+       
+       if (title && content) {
+           try {
+               const folderRef = doc(db, "folders", docId);
+               await updateDoc(folderRef, { title: title, content: content });
+               alert('Folder updated successfully!');
+               displayFolders();
+           } catch (error) {
+               console.error('Error updating folder: ', error);
+               alert('Error updating folder: ' + error.message);
+           }
+       } else {
+           alert('Both title and content are required for an update!');
+       }
+   }
+
+   document.addEventListener("DOMContentLoaded", () => {
+       displayUsers();
+       displayFolders();
+   });
+
+   document.getElementById('postForm').addEventListener('submit', async function(event) {
+       event.preventDefault();
+       const title = document.getElementById('title').value;
+       const content = document.getElementById('content').value;
+
+       try {
+           const newFolderRef = doc(collection(db, "folders"));
+           await setDoc(newFolderRef, {
+               title: title,
+               content: content,
+               createdAt: new Date().toISOString()
+           });
+           alert('Folder saved successfully!');
+           document.getElementById('postForm').reset();
+           displayFolders();
+       } catch (error) {
+           console.error('Error saving folder: ', error);
+           alert('Error saving folder: ' + error.message);
+       }
+   });
+
+   async function fetchFolders() {
+       const folderSelector = document.getElementById('folderSelector');
+       try {
+           const querySnapshot = await getDocs(collection(db, "folders"));
+           querySnapshot.forEach((doc) => {
+               const folderData = doc.data();
+               const option = document.createElement("option");
+               option.value = doc.id;
+               option.textContent = folderData.title;
+               folderSelector.appendChild(option);
+           });
+       } catch (error) {
+           console.error("Error fetching folders: ", error);
+       }
+   }
+
+   fetchFolders();
+
+   //* post //
+   
+async function handlePostSubmit(event) {
+    event.preventDefault();
+    const title = document.getElementById('head').value;
+    const content = document.getElementById('post').value;
+    const file = document.getElementById('image').files[0];
+    const selectedFolder = document.getElementById('folderSelector').value;  // Folder watoranyije
+
+    // Fata izina rya author muri localStorage
+    const author = localStorage.getItem("username");  // Izina rya author ryabitse muri localStorage
+
+    // Genzura niba ifoto yatowe
+    if (!file) {
+        alert('Please select an image file.');
+        return;
+    }
+
+    // Genzura niba umutwe n'ibisobanuro byuzuye
+    if (!title || !content) {
+        alert('Title and content are required.');
+        return;
+    }
+
+    try {
+        // Bika ifoto muri Firebase Storage
+        const storageRef = ref(storage, `amafoto/${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        console.log('Amafoto abitswe neza!');
+        
+        // Fata URL y'aho amafoto abitswe
+        const url = await getDownloadURL(storageRef);
+
+        // Bika URL muri Firestore
+        const newPostsRef = doc(collection(db, "posts"));
+        await setDoc(newPostsRef, {
+            head: title,
+            post: content,
+            imageUrl: url, // Bika URL y'ifoto muri database
+            folderId: selectedFolder,  // Fata folder watoranyije
+            author: author,  // Bika izina rya author
+            createdAt: new Date().toISOString()
+        });
+
+        alert('Posts saved successfully!');
+        document.getElementById('posts').reset(); // Reba niba "posts" ari izina ry'ikibuga
+        displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
+    } catch (error) {
+        console.error('Error saving post: ', error);
+        alert('Error saving post: ' + error.message);
+    }
+}
+document.getElementById("posts").addEventListener("submit", handlePostSubmit);
+
+// call post //
+
+
+// Async function to display posts
+async function getCommentCount(postId) {
+    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const commentsSnapshot = await getDocs(commentsRef);
+    return commentsSnapshot.size; // Umubare wa comments kuri iyi post id
+}
+
+async function displayPosts() {
+    const postsRef = collection(db, "posts");
+    const postsSnapshot = await getDocs(postsRef);
+    const tableBody = document.querySelector(".content tbody");
+    tableBody.innerHTML = '';
+
+    for (const doc of postsSnapshot.docs) {
+        const post = doc.data();
+        
+        // Banza ubare comments muri subcollection ya comments ifitanye isano na post id
+        const commentCount = await getCommentCount(doc.id);
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${post.head}</td>
+            <td>
+                ${post.post.length > 200 ? post.post.substring(0, 200) + '... <button onclick="readMore(${doc.id})">Read More</button>' : post.post}
+            </td>
+            <td>${post.folderId}</td>
+            <td>${post.createdAt}</td>
+            <td>
+                <img src="${post.imageUrl}" alt="${post.head}" style="width: 100px; height: auto; border-radius: 14px;"/>
+            </td>
+            <td>${commentCount}</td> <!-- Umubare wa comments utanzwe muri subcollection ya comments -->
+            <td>${post.author}</td>
+            <td>
+                <button class="edit-post-btn" data-id="${doc.id}">Edit</button>
+                <button class="delete-post-btn" data-id="${doc.id}">Delete</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    }
+
+    document.querySelectorAll(".edit-post-btn").forEach(button => {
+        button.addEventListener("click", handlePostEdit);
+    });
+
+    document.querySelectorAll(".delete-post-btn").forEach(button => {
+        button.addEventListener("click", handlePostDelete);
+    });
+}
+
+// Function to handle editing posts
+async function handlePostEdit(event) {
+    const postId = event.target.dataset.id;
+
+    // Fetch the existing post data for editing
+    const postRef = doc(db, "posts", postId);
+    const postSnapshot = await getDoc(postRef);
+
+    if (postSnapshot.exists()) {
+        const postData = postSnapshot.data();
+
+        // Here you can open a modal or navigate to an edit page with the post data
+        // For example, filling out a form with the existing data
+        console.log(`Edit post with ID: ${postId}`, postData);
+
+        // Example: Populate a form (assuming you have a modal with a form)
+        document.querySelector("#editPostHead").value = postData.head;
+        document.querySelector("#editPostContent").value = postData.post;
+        document.querySelector("#editPostFolderId").value = postData.folderId;
+        document.querySelector("#editPostId").value = postId;
+
+        // Show the modal
+        // You would need to implement this part based on your UI
+        // For example, if using Bootstrap, you might call:
+        // $('#editPostModal').modal('show');
+    } else {
+        console.error("No such post!");
+    }
+}
+
+// Function to handle deleting posts
+async function handlePostDelete(event) {
+    const postId = event.target.dataset.id;
+
+    // Show confirmation dialogue
+    const confirmation = confirm("Are you sure you want to delete this post?");
+    if (confirmation) {
+        // Delete the post from Firestore
+        const postRef = doc(db, "posts", postId);
+        await deleteDoc(postRef);
+        console.log(`Delete post with ID: ${postId}`);
+
+        // Refresh the posts display
+        displayPosts();
+    }
+}
+
+// Hamagara displayPosts function kugira ngo ubone posts
+displayPosts();
+
+
+// kwerekana ads muri table ya database 
+
+document.getElementById('adForm').addEventListener('submit', async function(event) {
+       event.preventDefault();
+       const ad = document.getElementById('ad').value;
+
+       try {
+           const newAdRef = doc(collection(db, "ads"));
+           await setDoc(newAdRef, {
+               ad: ad,
+               createdAt: new Date().toISOString()
+           });
+           alert('ad saved successfully!');
+           document.getElementById('adForm').reset();
+           displayAds();
+       } catch (error) {
+           console.error('Error saving ad: ', error);
+           alert('Error saving ad: ' + error.message);
+       }
+   });
+ 
+ 
+ // kugaragaza ads muri table //
+ 
+ 
+ async function displayAds() {
+  const adRef = collection(db, "ads");
+  const adsSnapshot = await getDocs(adRef);
+  const tableBody = document.querySelector(".ads-content tbody");
+  tableBody.innerHTML = '';
+
+  for (const doc of adsSnapshot.docs) {
+    const ad = doc.data();
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+            <td>${ad.ad}</td>
+            <td>${ad.createdAt}</td>
+            <td>
+                <button class="edit-ad-btn" data-id="${doc.id}">Edit</button>
+                <button class="delete-ad-btn" data-id="${doc.id}">Delete</button>
+            </td>
+        `;
+    tableBody.appendChild(row);
+  }
+
+  // Add event listeners for edit and delete buttons after rows are appended
+  document.querySelectorAll(".edit-ad-btn").forEach(button => {
+    button.addEventListener("click", handleAdEdit);
+  });
+
+  document.querySelectorAll(".delete-ad-btn").forEach(button => {
+    button.addEventListener("click", handleAdDelete);
+  });
+}
+
+// Function to handle editing ads
+async function handleAdEdit(event) {
+  const adId = event.target.dataset.id;
+
+  const adRef = doc(db, "ads", adId);
+  const adSnapshot = await getDoc(adRef);
+
+  if (adSnapshot.exists()) {
+    const adData = adSnapshot.data();
+    document.querySelector("#editAdAd").value = adData.ad;
+    console.log(`Edit ad with ID: ${adId}`, adData);
+  } else {
+    console.error("No such ad!");
+  }
+}
+
+// Function to handle deleting ads
+async function handleAdDelete(event) {
+  const adId = event.target.dataset.id;
+
+  const confirmation = confirm("Are you sure you want to delete this ad?");
+  if (confirmation) {
+    const adRef = doc(db, "ads", adId);
+    await deleteDoc(adRef);
+    console.log(`Deleted ad with ID: ${adId}`);
+    event.target.closest("tr").remove();
+  }
+}
+
+displayAds();
+
+// Gusoma Izina muri Local Storage no kuryerekana
+// Gusoma Izina muri Local Storage no kuryerekana ahantu hose hamenyekanyeho id ya `usernameDisplay`
+document.addEventListener("DOMContentLoaded", () => {
+    // Fata izina muri local storage, niba ridahari ukoreshe "Guest" nk'ikiraro
+    const username = localStorage.getItem("username") || "Guest";
+
+    // Shakisha ibice byose bifite id ya `usernameDisplay`
+    const usernameDisplays = document.querySelectorAll("#usernameDisplay");
+    
+    // Ukoreshe loop usimbuze ahantu hose
+    usernameDisplays.forEach((element) => {
+        element.textContent = username;
+    });
+});
+// Function yo gusiba amakuru yose muri local storage no gufungura login.html
+// Function yo gusiba izina gusa muri local storage no gufungura login.html
+function logout() {
+    // Siba izina gusa muri local storage
+    localStorage.removeItem("username");
+    
+    // Fungura urupapuro rwa login.html
+    window.location.href = "login.html";
+}
+
+// Guhuza function na button ya logout
+document.getElementById("logoutButton").addEventListener("click", logout);
+
+
+
+// Fungura umubare wa posts
+// Function yo kuvugurura umubare wa posts
+// Fungura umubare wa posts
+async function displayTotalPosts() {
+    try {
+        const postsCollection = collection(db, "posts");
+        const postsSnapshot = await getDocs(postsCollection);
+        const totalPosts = postsSnapshot.size; // Umubare wa posts
+
+        // Erekana umubare wa posts muri HTML
+        document.getElementById("total-posts").innerText = ` ${totalPosts}`;
+    } catch (error) {
+        console.error("Error fetching total posts:", error);
+    }
+}
+
+// Hamagara function
+displayTotalPosts();
+
+
+
+// Fungura posts zifite comments nyinshi
+// Fungura posts zifite comments nyinshi
+async function displayTopPostsByComments() {
+    try {
+        const postsCollection = collection(db, "posts");
+        const postsSnapshot = await getDocs(postsCollection);
+        const posts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        // Gufata umubare w'ibitekerezo kuri buri post
+        const postsWithCommentsCount = await Promise.all(posts.map(async post => {
+            const commentsCollectionRef = collection(db, "posts", post.id, "comments");
+            const commentsSnapshot = await getDocs(commentsCollectionRef);
+            return { ...post, commentsCount: commentsSnapshot.size }; // Ongeramo commentsCount
+        }));
+
+        // Sort posts by the number of comments
+        const sortedPosts = postsWithCommentsCount.sort((a, b) => b.commentsCount - a.commentsCount);
+
+        // Fata posts 3 za mbere
+        const topPosts = sortedPosts.slice(0, 3);
+
+        // Erekana titles z'izo posts muri HTML
+        const postsCommentsDiv = document.getElementById("posts-comments");
+        topPosts.forEach(post => {
+            const postElement = document.createElement("p");
+            postElement.innerText = `STORY: ${post.head} = Comments: ${post.commentsCount}`;
+            postsCommentsDiv.appendChild(postElement);
+        });
+    } catch (error) {
+        console.error("Error fetching top posts by comments:", error);
+    }
+}
+
+// Hamagara function
+displayTopPostsByComments();
+
+// Fungura Firestore
+async function displaySubscribers() {
+    try {
+        const subscribersCollection = collection(db, "subscriber");
+        const subscribersSnapshot = await getDocs(subscribersCollection);
+        const totalSubscribers = subscribersSnapshot.size; // Umubare w'abasaba
+
+        // Gukora urutonde rw'abasaba
+        const subscribersList = document.getElementById('subscribers-list');
+        subscribersList.innerHTML = ''; // Gukuramo ibiriho mbere
+
+        // Erekana email zose
+        subscribersSnapshot.forEach((doc) => {
+            const data = doc.data();
+            const email = data.email; // Email ikurwamo mu nyandiko
+
+            // Kora ikintu gitanga email
+            const listItem = document.createElement('li');
+            listItem.textContent = email; // Gushyira email mu itangazo
+            subscribersList.appendChild(listItem); // Gushyira itangazo mu mwanya w'ibisubizo
+        });
+
+        // Erekana umubare w'abasaba
+        document.getElementById("total-subscribers").innerText = `Umubare w'abasaba: ${totalSubscribers}`;
+    } catch (error) {
+        console.error("Error fetching subscribers:", error);
+    }
+}
+
+// Hamagara function
+displaySubscribers();
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+</body>
+</html>
