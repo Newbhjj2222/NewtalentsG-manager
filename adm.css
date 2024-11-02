@@ -13,6 +13,8 @@
     list-style-type: none;
     box-sizing: border-box;
     font-family: 'Merriweather', sans-serif;
+    font-size: 15px;
+    
     
 }
 
@@ -74,7 +76,10 @@
     color: white;
 }
 .side-menu a.active {
-    background: #2B384E;
+    background: crimson;
+    border-radius: 12px;
+    margin-top: 6px;
+    margin: 5px auto;
 }
 
 .side-menu a.active span, .side-menu a.active small {
@@ -680,6 +685,7 @@ input[type="text"], textarea {
             
            
             
+        
         }
          h6{
            color: blue;
