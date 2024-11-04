@@ -133,3 +133,63 @@ dashboardLink.addEventListener('click', (event) => {
     event.preventDefault(); // Irinde gufungura page nshya
     toggleDisplay(dashboard); // Fungura cyangwa funga
 });
+
+// Fata elements zose zifite class ya "nav-link"
+const navLinks = document.querySelectorAll('.nav-link');
+
+// Fungura function yo kwimura class "active"
+navLinks.forEach(link => {
+  link.addEventListener('click', function() {
+    // Siba class "active" kuri links zose
+    navLinks.forEach(link => link.classList.remove('active'));
+    // Yongeraho "active" kuri link uriho ubu
+    this.classList.add('active');
+  });
+});
+
+const createNotificationLink = document.getElementById("create-notification");
+const notifyForm = document.getElementById("notifyForm");
+
+// Add a click event listener to the create notification link
+createNotificationLink.addEventListener("click", function(event) {
+  event.preventDefault(); // Prevent default link behavior
+
+  // Toggle visibility of the notification form
+  if (notifyForm.style.display === "none" || notifyForm.style.display === "") {
+    notifyForm.style.display = "block"; // Show the form
+  } else {
+    notifyForm.style.display = "none"; // Hide the form
+  }
+});
+
+// Add a click event listener to the entire document
+document.addEventListener("click", function(event) {
+  // Check if the click happened outside of the notification form and the link
+  if (!notifyForm.contains(event.target) && event.target !== createNotificationLink) {
+    notifyForm.style.display = "none"; // Hide the form if clicked outside
+  }
+});
+
+
+const manageNotificationLink = document.getElementById("manage-notification");
+const notify = document.getElementById("notify");
+
+// Add a click event listener to the create notification link
+manageNotificationLink.addEventListener("click", function(event) {
+  event.preventDefault(); // Prevent default link behavior
+
+  // Toggle visibility of the notification form
+  if (notify.style.display === "none" || notify.style.display === "") {
+    notify.style.display = "block"; // Show the form
+  } else {
+    notify.style.display = "none"; // Hide the form
+  }
+});
+
+// Add a click event listener to the entire document
+document.addEventListener("click", function(event) {
+  // Check if the click happened outside of the notification form and the link
+  if (!notify.contains(event.target) && event.target !== manageNotificationLink) {
+    notify.style.display = "none"; // Hide the form if clicked outside
+  }
+});
