@@ -13,7 +13,7 @@
     list-style-type: none;
     box-sizing: border-box;
     font-family: 'Merriweather', sans-serif;
-    font-size: 15px;
+    
     
     
 }
@@ -247,6 +247,13 @@ h1, .page-title{
    margin-top: 49px;
    margin-right: 45px;
  }
+.not-content{
+  display: none;
+  margin-left: 13px;
+  border-radius: 23px;
+  width: 90%;
+  border: 1px solid grey;
+}
 table, th, td {
   border: 1px solid #ddd;
   display: flex;
@@ -532,6 +539,16 @@ input[type="text"], textarea {
   border-radius: 34px;
   
 }
+.notification-form {
+            background-color: #ffffff;
+            padding: 2px;
+            border-radius: 28px;
+            width: 300px;
+            margin-left: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 5.9);
+            border: 1px solid grey;
+            display: none;
+        }
 
  .form{
         background:#fff;
@@ -743,26 +760,25 @@ input[type="text"], textarea {
     width: 50px;
     overflow: hidden;
     height: auto;
-    font-size: 0.2rem;
     position: fixed;
     top: 0;
     z-index: 1000;
   }
   .sidebar li a{
     height: 8px;
-    font-size: 0.1px;
     justify-content: space-between;
   }
   .sidebar li a span{
-    font-size: 19px;
     top: 0;
+    font-size: 18px;
+    bottom: 5%;
     justify-content: space-between;
+    
   }
   .side-menu a small{
     display: none;
   }
   .main-content{
-    font-size: .1rem;
     width: 100%;
     margin-left: 44px;
     margin-top: 3px;
@@ -772,14 +788,14 @@ input[type="text"], textarea {
     width: auto;
   }
   .user-management table{
-    width: 99%;
+    font-size: 12px;
+    padding: 15px;
     margin-left: 0;
-    font-size: 9px;
     overflow: hidden;
   }
   .user-management table th{
     width: 100%;
-    font-size: 6px;
+    
 
   }
 .editor-container{
@@ -843,5 +859,14 @@ input[type="text"], textarea {
    .form{
      width: 90%;
    }
-     
+     #notify{
+       width: 94%;
+     }
+     #post{
+       font-size: 12px;
+       width: 100%;
+     }
+     #users{
+       width: 110%;
+     }
 }
