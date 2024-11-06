@@ -14,7 +14,7 @@
   <title>admin dashboard</title>
 </head>
 <body>
-<input type="checkbox" id="menu-toggle">
+<input type="checkbox" id="menu-toggle"></input>
 <div class="sidebar">
         <div class="side-header">
             <h3>New<span>talents</span>G</h3>
@@ -41,6 +41,7 @@
                             <span class="las la-envelope"></span>
                             <small>Mailbox</small>
                         </a>
+                        </li>
                     <li>
             <a href="#" class="nav-link" id="manage-users">
                 <span class="las la-users"></span>
@@ -67,13 +68,13 @@
    </a>
  </li>
    <li>
-  <a href="" class="nav-link" id="manage-notification">
-   <span class="fas fa-bell"></span>
+  <a href="" class="nav-link">
+   <span class="fas fa-bell" id="manage-notification"></span>
    <small>manage notify</small>
 </a>
  </li>
 
-                     <li>
+          <li>
   <a href="" class="nav-link" id="create-Folder">
    <span class="las la-folder-plus"></span>
    <small>create folder</small>
@@ -92,8 +93,8 @@
 </a>
  </li>
   <li>
-  <a href="" class="nav-link" id="create-notification">
-   <span class="far fa-bell"></span>
+  <a href="" class="nav-link">
+   <span class="far fa-bell" id="create-notification"></span>
    <small>send notification</small>
 </a>
  </li>
@@ -128,8 +129,10 @@
                   </a>
                 <button type="button" id="logoutButton">Logout</button>
                     </div>
-                     
+                </div>
         </div>
+        <div class="admin">
+        
         <div class="user-management" id="userTable">
     <h1>Manage Users</h1>
     <table id="users">
@@ -231,7 +234,7 @@
                 
 
         </div>
-        <div class="profile-details">
+        <div class="profile-details" id="reader">
            <h2 id="user-name"></h2>
             <p><strong>Posts:</strong> <span id="post-count"></span></p>
             <p><strong>Balance:</strong> <span id="balance"></span></p>
@@ -259,8 +262,8 @@
 </div>
          
              <!---- admin content ---->
-    <div class="ad-content ad">
-      <h2 class="page-title">Manage Folders</h2>
+    <div class="ad-content ad" id="reader">
+      <h2 class="page-title">Create Folders</h2>
         <div class="content">
          <form id="postForm" enctype="multipart/form-data">
             <div class="form-group">
@@ -280,7 +283,7 @@
          
          <div class="form-container">
         <h2>WRITE YOUR STORY</h2>
-       <form id="posts" enctype="multipart/form-data">
+       <form id="stories" enctype="multipart/form-data">
     <div class="form-group">
         <label for="title">Title:</label>
         <input type="text" id="head" name="name" required placeholder="Title of your story...">
@@ -288,7 +291,7 @@
 
     <div class="form-group">
         <label for="post_content">Description:</label>
-        <textarea id="post" name="post_content" placeholder="Write your story..."></textarea>
+        <textarea id="story" name="post_content" placeholder="Write your story..."></textarea>
     </div>
 
     <div class="form-group">
@@ -325,7 +328,7 @@
         
         <div class="boxes">
             <div class="box statistic">
-                <h5>Total posts</h5>
+                <h5>Stories</h5>
                 <p id="total-posts"></p>
             </div>
             
@@ -391,6 +394,7 @@
 </table>
       </div>
           </div>
+        </div>
          
   <script src="adm.js"></script>
   
@@ -620,7 +624,7 @@
 async function handlePostSubmit(event) {
     event.preventDefault();
     const title = document.getElementById('head').value;
-    const content = document.getElementById('post').value;
+    const content = document.getElementById('story').value;
     const file = document.getElementById('image').files[0];
     const selectedFolder = document.getElementById('folderSelector').value;  // Folder watoranyije
 
@@ -633,11 +637,7 @@ async function handlePostSubmit(event) {
     }
 
     // Genzura niba umutwe n'ibisobanuro byuzuye
-    if (!title || !content) {
-        alert('Title and content are required.');
-        return;
-    }
-
+    
     try {
         // Bika ifoto muri Firebase Storage
         const storageRef = ref(storage, `amafoto/${file.name}`);
@@ -651,7 +651,7 @@ async function handlePostSubmit(event) {
         const newPostsRef = doc(collection(db, "posts"));
         await setDoc(newPostsRef, {
             head: title,
-            post: content,
+            story: content,
             imageUrl: url, // Bika URL y'ifoto muri database
             folderId: selectedFolder,  // Fata folder watoranyije
             author: author,  // Bika izina rya author
@@ -659,14 +659,14 @@ async function handlePostSubmit(event) {
         });
 
         alert('Posts saved successfully!');
-        document.getElementById('posts').reset(); // Reba niba "posts" ari izina ry'ikibuga
+        document.getElementById('stories').reset(); // Reba niba "posts" ari izina ry'ikibuga
         displayPosts(); // Fungura uburyo bwo kugaragaza izo posts
     } catch (error) {
         console.error('Error saving post: ', error);
         alert('Error saving post: ' + error.message);
     }
 }
-document.getElementById("posts").addEventListener("submit", handlePostSubmit);
+document.getElementById("stories").addEventListener("submit", handlePostSubmit);
 
 // call post //
 
