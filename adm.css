@@ -83,6 +83,7 @@
 }
 label[for="menu-toggle"] .las.la-bars {
     font-size: 44px; 
+    
 }
 #menu-toggle:checked ~ .sidebar {
     width: 60px;
@@ -247,6 +248,7 @@ h1, .page-title{
 table, th, td {
   border: 1px solid #ddd;
   padding: 15px;
+  
 }
 table{
   margin-left: 55px;
@@ -773,4 +775,145 @@ input[type="text"], textarea {
           margin-left: 200px;
           width: 70%;
         }
+        .notify{
+          display: none;
+        }
+@media only screen and (max-width: 770px) {
+    .sidebar {
+        width: 72px;
+        height: 100%; /* Gufata uburebure bwose bwa screen */
+        z-index: 9000;
+        left: 0;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Bituma ibice byose biguma hejuru */
+        gap: 8px;
+        overflow-y: auto; /* Gushyiramo scrolling igihe ibintu bidakwirwa kuri screen */
+    }
+
+    .sidebar ul {
+        padding: 0;
+        margin-left: 9px;
+        list-style: none;
+    }
+
+    .sidebar ul li {
+        height: 55px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  
+    .sidebar ul li a {
+        font-size: 6px;
+        text-align: center;
+        padding: 4px 0;
+    }
+
+    .sidebar ul li a span {
+        font-size: 12px;
+    }
+
+    .sidebar small {
+        font-size: 4px;
+        margin-top: auto; /* Kugira ngo small ibone umwanya wa nyuma muri sidebar */
+    }
+  
+    .main-content {
+        margin-left: 75px;
+        width: calc(100% - 75px);
         
+        
+    }
+
+    .admin {
+        width: calc(100% - 73px);
+        overflow: hidden;
+        margin-left: 73px;
+        margin-top: 5px;
+       
+       
+    }
+
+    a.active {
+        height: 37px;
+        width: 40px;
+        margin-top: 23px;
+        margin-right: 13px;
+    }
+    .dashboard{
+      width: calc(100% - 2px);
+      font-size: 12px;
+      margin-left: 6px;
+    }
+    .subscribers{
+      
+      width: auto;
+      
+    }
+    .boxes li{
+      font-size: 13px;
+    }
+ label[for="menu-toggle"] .las.la-bars {
+   margin-top: 5px;
+     
+    }
+    .user-management{
+      width: calc(100% - 15px);
+      margin-left: 15px;
+    }
+   table,th, td{
+      width: calc(100% - 5px);
+      margin-left: 0px;
+      overflow-x: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .editor-container{
+       width: calc(100% - 5px);
+    }
+    .form-container{
+      width: calc(100% - 5px);
+      margin-bottom: 12px;
+    }
+    .form-group label{
+      margin-top: 46px;
+      margin-left: 0;
+     
+    }
+    #head{
+      margin-left: 0;
+      width: 88%;
+    }
+    #folderSelector{
+      margin-left: 0;
+    }
+    #button{
+      margin-left: 25px;
+    }
+.writing-form{
+  width: calc(100% - 112px);
+  margin-left: 6px;
+}
+.notification-form{
+  width: calc(100% - 16px);
+  margin-left: 6px;
+}
+.btn{
+  margin-left: 59px;
+}
+.ad{
+  width: calc(100% - 16px);
+  margin-left: 6px;
+  overflow: hidden;
+  border: 2px solid grey;
+  box-shadow: 40px;
+  
+}
+.profile-container{
+  width: calc(100% - 6px);
+  margin-left: 6px;
+}
+}
