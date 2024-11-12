@@ -691,18 +691,20 @@ async function displayPosts() {
         const commentCount = await getCommentCount(doc.id);
 
         const row = document.createElement("tr");
+
+        // Gendana buri kintu kibarizwa muri document ya `post` muri table `posts`
         row.innerHTML = `
-            <td>${post.head}</td>
+            <td>${post.head || ''}</td>
             <td>
-                ${post.post.length > 200 ? post.post.substring(0, 200) + '... <button onclick="readMore(${doc.id})">Read More</button>' : post.post}
+                ${post.post && post.post.length > 200 ? post.post.substring(0, 200) + '... <button onclick="readMore(\'' + doc.id + '\')">Read More</button>' : (post.post || '')}
             </td>
-            <td>${post.folderId}</td>
-            <td>${post.createdAt}</td>
+            <td>${post.folderId || ''}</td>
+            <td>${post.createdAt || ''}</td>
             <td>
-                <img src="${post.imageUrl}" alt="${post.head}" style="width: 100px; height: auto; border-radius: 14px;"/>
+                ${post.imageUrl ? `<img src="${post.imageUrl}" alt="${post.head || ''}" style="width: 100px; height: auto; border-radius: 14px;"/>` : ''}
             </td>
             <td>${commentCount}</td> <!-- Umubare wa comments utanzwe muri subcollection ya comments -->
-            <td>${post.author}</td>
+            <td>${post.author || ''}</td>
             <td>
                 <button class="edit-post-btn" data-id="${doc.id}">Edit</button>
                 <button class="delete-post-btn" data-id="${doc.id}">Delete</button>
