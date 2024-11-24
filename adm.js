@@ -171,7 +171,152 @@ document.addEventListener("click", function(event) {
 });
 
 
-const manageNotificationLink = document.getElementById("manage-notification");
+
+const createTvLink = document.getElementById("create-tv");
+const notifm = document.getElementById("notifm");
+
+// Add a click event listener to the create notification link
+createTvLink.addEventListener("click", function(event) {
+  event.preventDefault(); // Prevent default link behavior
+
+  // Toggle visibility of the notification form
+  if (notifm.style.display === "none" || notifm.style.display === "") {
+    notifm.style.display = "block"; // Show the form
+  } else {
+    notifm.style.display = "none"; // Hide the form
+  }
+});
+
+// Add a click event listener to the entire document
+document.addEventListener("click", function(event) {
+  // Check if the click happened outside of the notification form and the link
+  if (!notifm.contains(event.target) && event.target !== createTvLink) {
+    notifm.style.display = "none"; // Hide the form if clicked outside
+  }
+});
+
+const manageTvLink = document.getElementById("manage-tv");
+const notif = document.getElementById("notif");
+
+// Add a click event listener to the create notification link
+manageTvLink.addEventListener("click", function(event) {
+  event.preventDefault(); // Prevent default link behavior
+
+  // Toggle visibility of the notification form
+  if (notif.style.display === "none" || notif.style.display === "") {
+    notif.style.display = "block"; // Show the form
+  } else {
+    notif.style.display = "none"; // Hide the form
+  }
+});
+
+// Add a click event listener to the entire document
+document.addEventListener("click", function(event) {
+  // Check if the click happened outside of the notification form and the link
+  if (!notif.contains(event.target) && event.target !== manageTvLink) {
+    notif.style.display = "none"; // Hide the form if clicked outside
+  }
+});
+
+function formatText(command) {
+      document.execCommand(command, false, null);
+    }
+
+    function changeColor(color) {
+      document.execCommand('foreColor', false, color);
+    }
+
+    function insertImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      // Kurema element y'ishusho hamwe na styles zayo
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.style.width = '60px'; 
+      img.style.height = '60px';// Urugero: gukora ishusho ijye ifata 100% y'ubugari
+      img.style.borderRadius = '10px'; // Urugero: gutinda imfuruka z'ishusho
+      img.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'; // Urugero: kongeraho umwijima ukorera inyuma
+
+      // Gutera ishusho aho hagenwe
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(img);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+    function insertVideo(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        const videoHTML = `<video controls style="max-width: 54%; height: 70px;"><source src="${url}" type="${file.type}">Your browser does not support videos.</video>`;
+        document.getElementById('editor').focus();
+        document.execCommand('insertHTML', false, videoHTML);
+      }
+    }
+
+    function insertLink() {
+            let url = prompt("Enter the URL");
+            let text = prompt("Enter the display text");
+            if (url && text) {
+                const link = document.createElement("a");
+                link.href = url;
+                link.target = "_blank";
+                link.textContent = text;
+
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    range.deleteContents();
+                    range.insertNode(link);
+                    range.setStartAfter(link);
+                    range.setEndAfter(link);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
+            }
+        }
+        function insertTable() {
+        const rows = prompt("Enter number of rows:");
+        const cols = prompt("Enter number of columns:");
+        if (rows && cols) {
+            const table = document.createElement("table");
+            for (let i = 0; i < rows; i++) {
+                const row = document.createElement("tr");
+                for (let j = 0; j < cols; j++) {
+                    const cell = document.createElement("td");
+                    cell.textContent = " ";
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+            table.style.border = "1px solid black";
+            table.style.height = "50%"
+            table.style.borderCollapse = "collapse";
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            range.insertNode(table);
+        }
+    }
+
+    function addBorders() {
+        const editor = document.getElementById("editor");
+        const tables = editor.getElementsByTagName("table");
+        for (const table of tables) {
+            table.style.border = "1px solid black";
+            for (const cell of table.getElementsByTagName("td")) {
+                cell.style.border = "1px solid black";
+            }
+        }
+    }
+  
+   const manageNotificationLink = document.getElementById("manage-notification");
 const notify = document.getElementById("notify");
 
 // Add a click event listener to the create notification link
