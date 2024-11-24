@@ -238,7 +238,7 @@ h1, .page-title{
    margin-top: 49px;
    margin-right: 45px;
  }
-.not-content{
+.not-content, .nop-content{
   display: none;
   margin-left: 13px;
   border-radius: 23px;
@@ -504,6 +504,8 @@ input[type="file"] {
     margin-top: 23px;
     padding: 20px;
     position: fixed;
+    overflow-y: auto;
+    border: 1px solid red;
     display: none;
     border-radius: 18px;
     box-shadow: 0px 0px 10px goldenrod;
@@ -778,6 +780,77 @@ input[type="text"], textarea {
         .notify{
           display: none;
         }
+      .editor-contaner {
+    width: 90%;
+    max-width: 800px;
+    margin-left: 225px;/* Centers the container */
+    border: 2px solid dimgrey;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 9.9);
+    padding: 16px; /* Adds internal spacing */
+}
+
+.toolbar {
+    display: flex;
+    width: 100%; /* Adjusts toolbar width to match container */
+    padding: 10px;
+    background-color: #ddd;
+    border-bottom: 1px solid #ccc;
+    gap: 5px;
+    justify-content: center;
+    align-items: center; /* Centers items vertically */
+}
+
+.toolbar button {
+    background-color: #007bff;
+    color: #fff;
+    width: 40px; /* Makes buttons more accessible */
+    height: 30px;
+    font-size: 16px; /* Adjust font size for button text */
+    border: none;
+    border-radius: 5px; /* Adds consistent rounding */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Adds hover effect */
+}
+
+.toolbar button:hover {
+    background-color: #0056b3; /* Darkens on hover */
+}
+
+.toolbar input[type="file"] {
+    display: none;
+}
+
+#editor {
+    padding: 10px;
+    height: 180px;
+    margin-top: 13px;
+    border: 1px solid black;
+    outline: none;
+    font-size: 16px;
+    border-radius: 15px; /* Adds smooth edges */
+    overflow: auto;
+    
+}
+
+.color-picker {
+    height: 35px;
+    border: none;
+    background: #007bff;
+    width: 50px;
+}
+
+#videoButton, #imageButton {
+    margin-top: 100px;
+    margin-left: 15px;
+}
+#u{
+  text-decoration: underline;
+}
+#notifm{
+  display: none;
+}
 @media only screen and (max-width: 770px) {
     .sidebar {
         width: 72px;
@@ -866,12 +939,13 @@ input[type="text"], textarea {
     }
    table,th, td{
       width: calc(100% - 5px);
+      height: auto;
       margin-left: 0px;
       overflow-x: auto;
       display: flex;
       flex-direction: column;
     }
-    .editor-container{
+    .ed#42445Aitor-container{
        width: calc(100% - 5px);
     }
     .form-container{
@@ -915,5 +989,21 @@ input[type="text"], textarea {
 .profile-container{
   width: calc(100% - 6px);
   margin-left: 6px;
+}
+.editor-contaner{
+  width: calc(100%-12px);
+  height: 50%;
+  margin-left: 80px;
+}
+.toolbar{
+            flex-wrap: wrap;
+            padding: 4px;
+            background-color: #ddd;
+            border-bottom: 1px solid #ccc;
+            gap: 3px;
+            justify-content: center;
+        }
+#image{
+  display: inline-block;
 }
 }
