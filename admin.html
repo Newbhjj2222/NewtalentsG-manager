@@ -74,6 +74,12 @@
 </a>
  </li>
 
+<li>
+  <a href="" class="nav-link">
+   <span class="fas fa-tv" id="manage-tv"></span>
+   <small>manage tv</small>
+</a>
+ </li>
           <li>
   <a href="" class="nav-link" id="create-Folder">
    <span class="las la-folder-plus"></span>
@@ -96,6 +102,12 @@
   <a href="" class="nav-link">
    <span class="far fa-bell" id="create-notification"></span>
    <small>send notification</small>
+</a>
+ </li>
+   <li>
+  <a href="" class="nav-link">
+   <span class="fas fa-desktop" id="create-tv"></span>
+   <small>send tv ads</small>
 </a>
  </li>
            </ul>
@@ -309,12 +321,16 @@
     </div>
 </form>
     </div>
-        </div>
+        </div>"
          
          
        <!-- Iyi niyo form yawe -->
     <div class="writing-form">
         <h2>Write Ads</h2>
+        
+
+        
+        
        <form id="adForm">
     <label for="content">Advertising:</label>
     <textarea id="ad" placeholder="write ads..." required></textarea>
@@ -375,7 +391,7 @@
     </div>
          
          
-          <div class="not-content" id="notify">
+           <div class="nop-content" id="notify">
              <h2 class="page-title">Manage Notifications</h2>
            
       <div class="content">
@@ -396,13 +412,67 @@
           </div>
         </div>
          
+         
+          <div class="not-content" id="notif">
+             <h2 class="page-title">Manage tv</h2>
+           
+      <div class="content">
+         <table id="notif">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Info</th>
+      <th>CreatedAt</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="notifBody">
+    <!-- Row data will be dynamically inserted here -->
+  </tbody>
+</table>
+      </div>
+          </div>
+        </div>
+         
+         
+         
+         <div class="editor-contaner" id="notifm">
+ <div class="toolbar">
+        <!-- Buttons za formatting -->
+       <button onclick="formatText('bold')">B</button>
+            <button onclick="formatText('italic')"><i>I</i></button>
+           
+            
+            <input type="color" class="color-picker" onchange="changeColor(this.value)">
+            <label>
+                <button onclick="document.getElementById('imageUpload').click()" id="imageButton">🖼️</button>
+                <input type="file" id="imageUpload" accept="image/*" onchange="insertImage(event)">
+            </label>
+            <label>
+                <button onclick="document.getElementById('videoUpload').click()" id="videoButton">🎥</button>
+                <input type="file" id="videoUpload" accept="video/*" onchange="insertVideo(event)">
+            </label>
+            <button onclick="insertTable()">📊</button>
+            
+             <button onclick="insertLink()" title="Insert Link"><i class="fas fa-link"></i></button>
+        <!-- Add other toolbar buttons here -->
+    </div>
+
+    
+<div id="editor" class="editor" contenteditable="true" oninput="applyTextColor()">
+    andika ahhha...
+</div>
+    <button type="button" onclick="saveToFirestore()">Submit</button>
+</div>
+         
+         
+        
+ 
+         
+         
   <script src="adm.js"></script>
   
 <script type="module">
-  
-
-   
-
    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
    import { getAuth,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
    import { getFirestore, doc, getDoc, updateDoc, deleteField, deleteDoc, setDoc, collection, getDocs,addDoc, serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
@@ -795,6 +865,7 @@ document.getElementById('adForm').addEventListener('submit', async function(even
    });
  
  
+ 
  // kugaragaza ads muri table //
  
  
@@ -1157,6 +1228,107 @@ async function handleNotificationDelete(event) {
 // Guhamagara function kugirango table yijyemo amakuru
 displayNotificationsInTable();
 
+
+// Andika amazina yawe hano kugirango ikuremo amagambo ya "User Name"
+
+
+// Function yo kohereza content ya 'editor' muri Firestore
+
+// Function yo kubika muri Firestore
+async function saveToFirestore() {
+  // Soma content mu div ukoresheje innerHTML
+  const editorContent = document.getElementById("editor").innerHTML.trim();
+
+  if (!editorContent) {
+    alert("Please write something before submitting.");
+    return;
+  }
+
+  try {
+    // Bika muri Firestore
+    await addDoc(collection(db, "screens"), {
+      content: editorContent,
+      createdAt: new Date().toISOString()
+    });
+
+    alert("Content saved successfully!");
+
+    // Gusiba ibiri muri editor
+    document.getElementById("editor").innerHTML = "";
+  } catch (error) {
+    console.error("Error saving content to Firestore:", error);
+    alert("Failed to save content: " + error.message);
+  }
+}
+
+// Koresha saveToFirestore muri button ya HTML
+window.saveToFirestore = saveToFirestore;
+
+
+// kugaragaza ads kuri screen nini
+
+
+async function displayScreens() {
+  const contentRef = collection(db, "screens");
+  const screensSnapshot = await getDocs(contentRef);
+  const tableBody = document.querySelector("#notif tbody");
+tableBody.innerHTML = '';
+
+  for (const doc of screensSnapshot.docs) {
+    const content = doc.data();
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${content.content}</td>
+      <td>${content.createdAt}</td>
+      <td>
+        <button class="edit-ad-btn" data-id="${doc.id}">Edit</button>
+        <button class="delete-ad-btn" data-id="${doc.id}">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  }
+
+  // Add event listeners for edit and delete buttons after rows are appended
+  document.querySelectorAll(".edit-ad-btn").forEach(button => {
+    button.addEventListener("click", handleContentEdit);
+  });
+
+  document.querySelectorAll(".delete-ad-btn").forEach(button => {
+    button.addEventListener("click", handleContentDelete);
+  });
+}
+
+// Function to handle editing ads
+async function handleContentEdit(event) {
+  const contentId = event.target.dataset.id;
+
+  const contentRef = doc(db, "screens", contentId);
+  const contentSnapshot = await getDoc(contentRef);
+
+  if (contentSnapshot.exists()) {
+    const contentData = contentSnapshot.data();
+    document.querySelector("#editScreenContent").value = contentData.content;
+    console.log(`Edit content with ID: ${contentId}`, contentData);
+  } else {
+    console.error("No such content!");
+  }
+}
+
+// Function to handle deleting ads
+async function handleContentDelete(event) {
+  const contentId = event.target.dataset.id;
+
+  const confirmation = confirm("Are you sure you want to delete this content?");
+  if (confirmation) {
+    const contentRef = doc(db, "screens", contentId);
+    await deleteDoc(contentRef);
+    console.log(`Deleted content with ID: ${contentId}`);
+    event.target.closest("tr").remove();
+  }
+}
+
+displayScreens();
 
 </script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
