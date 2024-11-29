@@ -338,3 +338,21 @@ document.addEventListener("click", function(event) {
     notify.style.display = "none"; // Hide the form if clicked outside
   }
 });
+
+
+
+
+function changeBackgroundColor(color) {
+    // Fata selection y'inyandiko
+    let selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        let range = selection.getRangeAt(0);
+        let span = document.createElement("span");
+        span.style.backgroundColor = color; // Shyiraho background color
+        range.surroundContents(span); // Surround inyandiko na span
+    }
+}
+
+
+
+
