@@ -1007,3 +1007,10 @@ input[type="text"], textarea {
   display: inline-block;
 }
 }
+.bg-color-picker{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  padding: 0;
+  flex-direction: row;
+}
