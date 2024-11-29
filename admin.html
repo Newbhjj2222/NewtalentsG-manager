@@ -437,28 +437,27 @@
          
          
          <div class="editor-contaner" id="notifm">
- <div class="toolbar">
-        <!-- Buttons za formatting -->
-       <button onclick="formatText('bold')">B</button>
-            <button onclick="formatText('italic')"><i>I</i></button>
-           
-            
-            <input type="color" class="color-picker" onchange="changeColor(this.value)">
-            <label>
-                <button onclick="document.getElementById('imageUpload').click()" id="imageButton">🖼️</button>
-                <input type="file" id="imageUpload" accept="image/*" onchange="insertImage(event)">
-            </label>
-            <label>
-                <button onclick="document.getElementById('videoUpload').click()" id="videoButton">🎥</button>
-                <input type="file" id="videoUpload" accept="video/*" onchange="insertVideo(event)">
-            </label>
-            <button onclick="insertTable()">📊</button>
-            
-             <button onclick="insertLink()" title="Insert Link"><i class="fas fa-link"></i></button>
-        <!-- Add other toolbar buttons here -->
-    </div>
-
+<div class="toolbar">
+    <!-- Buttons za formatting -->
+    <button onclick="formatText('bold')">B</button>
+    <button onclick="formatText('italic')"><i>I</i></button>
+    <input type="color" class="color-picker" onchange="changeColor(this.value)">
+    <label>
+        <button onclick="document.getElementById('imageUpload').click()" id="imageButton">🖼️</button>
+        <input type="file" id="imageUpload" accept="image/*" onchange="insertImage(event)">
+    </label>
+    <label>
+        <button onclick="document.getElementById('videoUpload').click()" id="videoButton">🎥</button>
+        <input type="file" id="videoUpload" accept="video/*" onchange="insertVideo(event)">
+    </label>
+    <button onclick="insertTable()">📊</button>
     
+    <button onclick="insertLink()" title="Insert Link"><i class="fas fa-link"></i></button>
+
+    <!-- Button nshya yo guhindura background -->
+    <input type="color" class="bg-color-picker" onchange="changeBackgroundColor(this.value)" title="Change Background Color">
+</div>
+
 <div id="editor" class="editor" contenteditable="true" oninput="applyTextColor()">
     andika ahhha...
 </div>
