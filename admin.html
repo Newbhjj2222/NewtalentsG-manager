@@ -32,6 +32,12 @@
                             <small>Profile</small>
                         </a>
                     </li>
+                    <li><a href="" id="shop" class="nav-link">
+                            <span class="fab fa-buy-n-large"></span>
+                            <small>Buy story</small>
+                             <span class="by" id="number"></span>
+                        </a></li>
+                        <li>
              <li><a href="" id="dashboard" class="nav-link active">
                             <span class="las la-home"></span>
                             <small>Dashboard</small>
@@ -321,7 +327,7 @@
     </div>
 </form>
     </div>
-        </div>"
+        </div>
          
          
        <!-- Iyi niyo form yawe -->
@@ -463,7 +469,25 @@
 </div>
     <button type="button" onclick="saveToFirestore()">Submit</button>
 </div>
-         
+      
+      
+      <div class="buy">
+        <h2>INKURU ZIGURISHWA</h2>
+        <table id="hop">
+          <thead>
+          <tr>
+            <th>Author</th>
+            <th>Story</th>
+            <th>Episodes</th>
+            <th>Stories</th>
+            <th>momo number</th>
+            <th>phoneNumber</th>
+            <th>whatsAppNumber</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+        </table>
+      </div>   
          
         
  
@@ -1329,6 +1353,155 @@ async function handleContentDelete(event) {
 
 displayScreens();
 
+
+
+// Function to fetch and display data
+async function fetchStories() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "stories"));
+    const table = document.getElementById("hop");
+
+    // Clear the table and add headers
+    table.innerHTML = `
+      <tr>
+        <th>Author Name</th>
+        <th>Whatsapp Number</th>
+        <th>Phone Number</th>
+        <th>MoMo Number</th>
+        <th>Email</th>
+        <th>Story Name</th>
+        <th>Episodes</th>
+        <th>Actions</th>
+      </tr>
+    `;
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const episodes = data.episodes || [];
+
+      episodes.forEach((episode, index) => {
+        const summary = episode.length > 200 ? episode.substring(0, 200) + "..." : episode;
+
+        const row = `
+          <tr>
+            ${index === 0 ? `
+              <td rowspan="${episodes.length}">${data.authorName}</td>
+              <td rowspan="${episodes.length}">${data.whatsappNumber || "N/A"}</td>
+              <td rowspan="${episodes.length}">${data.phoneNumber}</td>
+              <td rowspan="${episodes.length}">${data.momoNumber}</td>
+              <td rowspan="${episodes.length}">${data.email}</td>
+              <td rowspan="${episodes.length}">${data.storyName}</td>
+            ` : ""}
+            <td>Episode ${index + 1}: ${summary}</td>
+            <td>
+            <button onclick="readMore('${episode.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Read more</button>
+            <button onclick="copyText('${episode.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Copy</button>
+            </td>
+          </tr>
+        `;
+
+        table.innerHTML += row;
+      });
+    });
+
+    // Add Delete All button
+    const deleteRow = `
+      <tr>
+        <td colspan="8" style="text-align: center;">
+          <button onclick="deleteAllEpisodes()" style="background-color: red; color: white;">Delete All</button>
+        </td>
+      </tr>
+    `;
+    table.innerHTML += deleteRow;
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    alert("An error occurred. Please try again.");
+  }
+}
+
+// Function for "Read More" button
+window.readMore = function (fullText) {
+  alert(`Full Episode:\n\n${fullText}`);
+};
+
+// Function for "Copy" button
+window.copyText = function (text) {
+  // Check if Clipboard API is supported
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        alert("Episode copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy text:", err);
+        alert("Failed to copy. Please try again.");
+      });
+  } else {
+    // Fallback for older browsers
+    const tempInput = document.createElement("textarea");
+    tempInput.value = text;
+    tempInput.style.position = "absolute";
+    tempInput.style.left = "-9999px";
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+      document.execCommand("copy");
+      alert("Episode copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+      alert("Failed to copy. Please try again.");
+    }
+    document.body.removeChild(tempInput);
+  }
+};
+// Function for "Delete All" button
+window.deleteAllEpisodes = async function () {
+  try {
+    const querySnapshot = await getDocs(collection(db, "stories"));
+
+    for (const doc of querySnapshot.docs) {
+      await deleteDoc(doc.ref);
+    }
+
+    alert("All episodes have been successfully deleted!");
+    fetchStories();
+  } catch (error) {
+    console.error("Error deleting episodes:", error);
+    alert("An error occurred while deleting episodes. Please try again.");
+  }
+};
+
+
+fetchStories();
+
+
+// Function to get the number of documents in the Firestore collection
+async function fetchDocumentCount() {
+  try {
+    // Fetch all documents from the "stories" collection
+    const querySnapshot = await getDocs(collection(db, "stories"));
+
+    // Get the number of documents
+    const documentCount = querySnapshot.size;
+
+    // Display the count in the HTML element with id "number"
+    const numberElement = document.getElementById("number");
+    if (numberElement) {
+      numberElement.textContent = documentCount;
+
+      // Change the display style to block
+      numberElement.style.display = "block";
+    } else {
+      console.error('Element with id "number" not found in the DOM.');
+    }
+  } catch (error) {
+    console.error("Error fetching document count:", error);
+  }
+}
+
+// Call the function to fetch and display the document count
+fetchDocumentCount();
 </script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
