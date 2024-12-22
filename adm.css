@@ -851,6 +851,25 @@ input[type="text"], textarea {
 #notifm{
   display: none;
 }
+.buy{
+  border: 1px solid lightgrey;
+  margin: 160px;
+  width: 100%;
+  display: none;
+}
+#number{
+  position: absolute;
+  background: red;
+  color: white;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+  border-radius: 50%;
+  top: 236px;
+  right: 24px;
+  display: none;
+  margin-bottom: 5px;
+}
 @media only screen and (max-width: 770px) {
     .sidebar {
         width: 72px;
@@ -869,6 +888,9 @@ input[type="text"], textarea {
         padding: 0;
         margin-left: 9px;
         list-style: none;
+    }
+    .buy{
+      margin: 90px;
     }
 
     .sidebar ul li {
