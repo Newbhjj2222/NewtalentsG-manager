@@ -353,6 +353,30 @@ function changeBackgroundColor(color) {
     }
 }
 
+// Fungura uburyo bwo gushiraho event ku link
+document.getElementById('shop').addEventListener('click', function(event) {
+    // Rekura kubyerekeye link item default action
+    event.preventDefault();
 
+    // Fata ibintu byose bifite class ya 'buy'
+    const items = document.querySelectorAll('.buy');
+    
+    // Hitamo gufungura byerekane
+    items.forEach(item => {
+        item.style.display = 'block'; // Kwerekana ibintu
+    });
 
+    // Fungura uburyo bwo guhisha ibintu igihe user akanda ahandi hantu
+    document.addEventListener('click', function hideItems(e) {
+        // Reba niba click yabaye hanze ya shop cyangwa kuri items
+        if (!document.getElementById('shop').contains(e.target) && !Array.from(items).some(item => item.contains(e.target))) {
+            // Guhisha ibyo bigaragajwe
+            items.forEach(item => {
+                item.style.display = 'none'; // Guhisha ibintu
+            });
 
+            // Kuraho event listener kugirango idakomeza gukora
+            document.removeEventListener('click', hideItems);
+        }
+    });
+});
