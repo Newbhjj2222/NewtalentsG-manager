@@ -822,7 +822,7 @@ input[type="text"], textarea {
     display: none;
 }
 
-#editor {
+#editor , #story {
     padding: 10px;
     height: 180px;
     margin-top: 13px;
@@ -869,6 +869,22 @@ input[type="text"], textarea {
   right: 24px;
   display: none;
   margin-bottom: 5px;
+}
+#toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+#toolbar button, #toolbar input, #toolbar select {
+  width: 32px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: blue;
 }
 @media only screen and (max-width: 770px) {
     .sidebar {
