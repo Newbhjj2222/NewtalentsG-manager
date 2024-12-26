@@ -309,7 +309,37 @@
 
     <div class="form-group">
         <label for="post_content">Description:</label>
-        <textarea id="story" name="post_content" placeholder="Write your story..."></textarea>
+        <div id="toolbar">
+                <button type="button" onclick="formatText('bold')" title="Bold">
+                    <i class="fas fa-bold"></i>
+                </button>
+                <button type="button" onclick="formatText('underline')" title="Underline">
+                    <i class="fas fa-underline"></i>
+                </button>
+                 <button onclick="insertLink()" title="Insert Link"><i class="fas fa-link"></i></button>
+                <button type="button" onclick="insertImage()" title="Insert Image">
+                    <i class="fas fa-image"></i>
+                </button>
+                <button type="button" onclick="insertVideo()" title="Insert Video">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button type="button" onclick="insertAudio()" title="Insert Audio">
+                    <i class="fas fa-music"></i>
+                </button>
+                <button type="button" onclick="formatText('insertOrderedList')" title="Ordered List">
+                    <i class="fas fa-list-ol"></i>
+                </button>
+                <input type="color" id="textColor" title="Text Color" onchange="changeColor(this.value)">
+                <input type="color" id="bgColor" title="Background Color" onchange="changeBackground(this.value)">
+                <select id="fontStyle" onchange="changeFontStyle(this.value)">
+                    <option value="">Font Style</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Tahoma">Tahoma</option>
+                    <option value="Verdana">Verdana</option>
+                </select>
+            </div>
+      <div id="story" contenteditable="true" placeholder="Write your story here..."></div>
     </div>
 
     <div class="form-group">
