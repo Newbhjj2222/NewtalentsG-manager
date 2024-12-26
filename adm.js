@@ -380,3 +380,105 @@ document.getElementById('shop').addEventListener('click', function(event) {
         }
     });
 });
+
+ 
+    // Targeting the story editor
+    const editor = document.getElementById('story');
+
+    // Enabling the toolbar functions
+    function formatText(command, value = null) {
+        document.execCommand(command, false, value);
+    }
+
+    function changeColor(color) {
+        formatText('foreColor', color);
+    }
+
+    function changeBackground(color) {
+        formatText('hiliteColor', color);
+    }
+
+    function changeFontStyle(font) {
+        formatText('fontName', font);
+    }
+
+    function insertImage() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = `<img src="${e.target.result}" style="max-width: 100%; height: 70px;">`;
+                document.execCommand('insertHTML', false, img);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+function insertVideo() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "video/*";
+    input.onchange = function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const video = `<video controls style="max-width: 100%; height: auto;">
+                    <source src="${e.target.result}" type="video/mp4">Your browser does not support the video tag.
+                </video>`;
+                document.execCommand('insertHTML', false, video);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+function insertAudio() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "audio/*";
+    input.onchange = function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const audio = `<audio controls>
+                    <source src="${e.target.result}" type="audio/mpeg">Your browser does not support the audio tag.
+                </audio>`;
+                document.execCommand('insertHTML', false, audio);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+    function insertHTML(html) {
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        const frag = document.createDocumentFragment();
+        let node;
+        while ((node = div.firstChild)) {
+            frag.appendChild(node);
+        }
+        range.insertNode(frag);
+    }
+
+    // Make the textarea contenteditable
+    editor.setAttribute('contenteditable', true);
+
+    // Sync contenteditable changes to the hidden textarea for form submission
+    editor.addEventListener('input', () => {
+        editor.value = editor.innerHTML;
+    });
