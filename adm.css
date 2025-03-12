@@ -21,9 +21,7 @@
 
 #menu-toggle {
     display: none;
-    
 }
-
 .sidebar {
     position: fixed;
     height: 100%;
@@ -282,13 +280,112 @@ th {
   align-items: center;
   display: block;
 }
-
+.xeditor{
+  margin-top: 15px;
+  padding: 12px;
+  background: lightgrey;
+  border-radius: 12px;
+}
+.xeditor .tobar{
+  margin-top: 13px;
+  margin-bottom: 12px;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  border-radius: 12px;
+  background: red;
+}
+.tobar button{
+  width: auto;
+  font-size: 4px;
+  height: auto;
+}
 .close {
   color: red;
   float: right;
   font-size: 28px;
 }
+#edito{
+  background: white;
+  border: 1px solid grey;
+  border-radius: 16px;
+  width: 100%;
+  height: 80px;
+  padding: 13px;
+}
+.poll-options, .results-container{
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid grey;
+  border-radius: 12px;
+}
+.results-container{
+  padding: none;
+}
 
+        .poll-options input[type="text"]{
+            width: calc(100% - 20px);
+            padding: 2px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+        }
+/* Div ifite id ya results */
+#results {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: auto; /* Kugira ngo ibe responsive */
+    max-width: 100%;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+/* Form ifite id ya poll-form */
+#poll-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Imiterere y'amahitamo */
+.option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Inputs za radio */
+.option input[type="radio"] {
+    accent-color: #007bff; /* Hindura ibara rya radio button */
+    transform: scale(1.2); /* Guhindura ubunini bwa radio button */
+}
+
+/* Labels */
+.option label {
+    font-size: 10px;
+    margin-left: -300px;
+    color: #333;
+}
+
+/* Button */
+#ask {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+/* Hover kuri button */
+#ask:hover {
+    background-color: #0056b3;
+}
 .close:hover,
 .close:focus {
   color: darkred;
@@ -597,7 +694,7 @@ input[type="text"], textarea {
         border-bottom:2px solid hsl(327,90%,28%);
     }
     input::placeholder{
-        color:transparent;
+        color: grey;
     }
     label{
         color:#757575;
@@ -833,7 +930,59 @@ input[type="text"], textarea {
     overflow: auto;
     
 }
-
+.channel{
+  width: 80%;
+  padding: 14px;
+  left: 270px;
+  margin-top: 20px;
+ display: none;
+}
+.banner{
+  background: gainsboro;
+  border-radius: 8px;
+}
+.banner input{
+  border: 1px solid dimgrey;
+  border-radius: 12px;
+}
+#show{
+  width: 99%;
+  padding: 10px;
+  height: 120px;
+  margin-top: 12px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid grey;
+}
+.load{
+  display: none;
+  width: 98%;
+  height: 12px;
+  background: white;
+  color: black;
+}
+.showtv{
+  width: 99%;
+  padding: 15px;
+  margin-top: 10px;
+  background: lightgrey;
+  border-radius: 12px;
+}
+.nees{
+  position: fixed;
+  bottom: 40px;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background: powderblue;
+  margin-left: 72px;
+  font-weight: bold;
+}
+.nees a{
+  padding: 30px;
+}
 .color-picker {
     height: 35px;
     border: none;
@@ -886,6 +1035,9 @@ input[type="text"], textarea {
     border-radius: 3px;
     background-color: blue;
 }
+
+
+
 @media only screen and (max-width: 770px) {
     .sidebar {
         width: 72px;
@@ -947,7 +1099,36 @@ input[type="text"], textarea {
        
        
     }
-
+#userTable{
+  border: 1px solid red;
+}
+.nes{
+  padding: 8px;
+  margin-top: 10px;
+}
+.nes input{
+  width: 60%;
+  height: 30px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+.nes span{
+  font-weight: bold;
+  margin-top: 10px;
+  border: 1px solid grey;
+}
+.nes p{
+  color: green;
+  font-weight: bold;
+}
+.nes button{
+  padding: 5px;
+  width: auto;
+}
+#dataDisplay{
+  padding: 10px;
+}
     a.active {
         height: 37px;
         width: 40px;
@@ -958,6 +1139,7 @@ input[type="text"], textarea {
       width: calc(100% - 2px);
       font-size: 12px;
       margin-left: 6px;
+      margin-bottom: 80px;
     }
     .subscribers{
       
@@ -1033,6 +1215,20 @@ input[type="text"], textarea {
   height: 50%;
   margin-left: 80px;
 }
+@keyframes fillProgress {
+  0% { width: 0%; background: red; }
+  100% { width: 100%; background: blue; }
+}
+
+#progress-bar {
+  height: auto;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  color: white;
+  width: 0%; /* Itangirira kuri 0% */
+  animation: fillProgress 5s linear forwards; /* Iragenda izura mu 5s */
+}
 .toolbar{
             flex-wrap: wrap;
             padding: 4px;
@@ -1051,4 +1247,62 @@ input[type="text"], textarea {
   display: flex;
   padding: 0;
   flex-direction: row;
+}
+.channel{
+  width: 78%;
+  margin-left: 74px;
+}
+   #results {
+        width: 100%; /* Kugera ku mpera z'ekarane ntoya */
+        max-width: 100%;
+        padding: 5px;
+       
+    }
+#results h4{
+  text-align: center;
+  margin-top: 10px;
+}
+    #ask {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .option label {
+        font-size: 10px;
+        margin-left: -100px;
+        margin-top: 100px;
+    }
+
+.option{
+  margin-left: -90px;
+}
+.mailbox{
+  width: 100%;
+}
+#message-list{
+  width: auto;
+  padding: 10px;
+  overflow: hidden;
+}
+#message-list span{
+  display: flex;
+  flex-direction: column;
+}
+#options-container{
+  margin-left: 85px;
+  padding: 5px;
+}
+.sponsor{
+  margin-left: 83px;
+  width: auto;
+  max-width: 75%;
+  border-radius: 10px;
+  padding: 10px;
+  color: black;
+  
+}
+.notif{
+  display: block;
+  background: red;
+  color: red;
 }
