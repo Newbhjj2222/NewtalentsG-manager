@@ -482,3 +482,214 @@ function insertAudio() {
     editor.addEventListener('input', () => {
         editor.value = editor.innerHTML;
     });
+    
+    // Fata button cyangwa link ugomba gukoresha
+const showContentButton = document.getElementById('showContent');
+
+// Fata elements zifite class ya "channel"
+const channelContent = document.querySelector('.channel');
+
+// Onclick event ya link
+showContentButton.addEventListener('click', function(event) {
+  event.preventDefault(); // Guhagarika default behavior ya link
+  if (channelContent.style.display === 'none' || !channelContent.style.display) {
+    channelContent.style.display = 'block'; // Erekana ibirimo
+  } else {
+    channelContent.style.display = 'none'; // Bihishe nanone
+  }
+});
+
+// Gukoresha click event ku nyandiko zose ziri hanze
+document.addEventListener('click', function(event) {
+  // Reba niba utanzeho button cyangwa ibirimo muri class ya channel
+  if (!showContentButton.contains(event.target) && !channelContent.contains(event.target)) {
+    channelContent.style.display = 'none'; // Bihishe niba ukanze ahandi
+  }
+});
+
+
+
+document.getElementById('addLink').addEventListener('click', () => {
+    const url = prompt('Enter the URL:');
+    if (url) {
+        document.execCommand('createLink', false, url);
+    }
+});
+
+function showInput(type) {
+  document.getElementById('fileInput').style.display = type === 'file' ? 'block' : 'none';
+  document.getElementById('urlInput').style.display = type === 'url' ? 'block' : 'none';
+}
+
+function displayVideo(type) {
+  const videoContainer = document.getElementById('video');
+  videoContainer.innerHTML = ''; // Siba ibyo byari biriho
+
+  if (type === 'file') {
+    const fileInput = document.getElementById('videoFile');
+    const file = fileInput.files[0];
+
+    if (file) {
+      const videoElement = document.createElement('video');
+      videoElement.controls = true;
+      videoElement.style.width = '100%';
+      const fileURL = URL.createObjectURL(file);
+      videoElement.src = fileURL;
+      videoContainer.appendChild(videoElement);
+    }
+  } else if (type === 'url') {
+    const urlInput = document.getElementById('videoURL');
+    const url = urlInput.value;
+
+    if (url) {
+      const videoElement = document.createElement('video');
+      videoElement.controls = true;
+      videoElement.style.width = '100%';
+      videoElement.src = url;
+      videoContainer.appendChild(videoElement);
+    }
+  }
+}
+
+
+
+      document.addEventListener("DOMContentLoaded", function() {
+    // Bika amahitamo
+    let options = [];
+
+    // Function yo kongera amahitamo
+    function addOption() {
+        const optionsContainer = document.getElementById('options-container');
+        const optionId = `option-${options.length}`;
+        const optionHTML = `
+            <div class="option">
+                <input type="text" placeholder="Andika amahitamo hano..." id="${optionId}" />
+            </div>
+        `;
+        optionsContainer.insertAdjacentHTML('beforeend', optionHTML);
+        options.push({ id: optionId, text: '', votes: 0 });
+    }
+
+    // Function yo gusiba amahitamo yose
+    function clearOptions() {
+        document.getElementById('options-container').innerHTML = '';
+        options = [];
+    }
+
+    // Function yo gushyiraho poll
+    function submitPoll() {
+        const question = document.getElementById('edito').innerHTML.trim();
+        if (question === '') {
+            alert('Nyamuneka andika ikibazo cyawe mbere yo kohereza.');
+            return;
+        }
+
+        options.forEach(option => {
+            const input = document.getElementById(option.id);
+            if (input) {
+                option.text = input.value.trim();
+            }
+        });
+
+        const validOptions = options.filter(option => option.text !== '');
+        if (validOptions.length < 2) {
+            alert('Nyamuneka shyiramo byibuze amahitamo abiri.');
+            return;
+        }
+
+        // Erekana ibisubizo
+        displayPoll(question, validOptions);
+    }
+
+    // Function yo kugaragaza ikibazo n'amahitamo muri results
+    function displayPoll(question, validOptions) {
+        const questionDisplay = document.getElementById("Qsn");
+        questionDisplay.textContent = question; // Kwerekana ikibazo muri results
+
+        const resultsContainer = document.getElementById("results");
+        const pollForm = document.getElementById("poll-form");
+        pollForm.innerHTML = ''; // Gusiba amahitamo ya kera
+
+        validOptions.forEach((option, index) => {
+            const optionDiv = document.createElement("div");
+            optionDiv.classList.add("option");
+
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = "poll";
+            input.value = option.text;
+            input.id = `amahitamo${index}`;
+
+            const label = document.createElement("label");
+            label.htmlFor = `amahitamo${index}`;
+            label.textContent = option.text;
+
+            optionDiv.appendChild(input);
+            optionDiv.appendChild(label);
+            pollForm.appendChild(optionDiv);
+        });
+
+        // Kongeramo button ya submit
+        const submitButton = document.createElement("button");
+        submitButton.textContent = "Submit Poll";
+        submitButton.id = "submit-poll";
+        submitButton.addEventListener("click", sendPollToDatabase);
+        pollForm.appendChild(submitButton);
+    }
+
+    // Function yo kohereza poll muri database (dummy function)
+    function sendPollToDatabase() {
+        const question = document.getElementById("Qsn").textContent;
+        const selectedOption = document.querySelector('input[name="poll"]:checked');
+
+        if (!selectedOption) {
+            alert("Nyamuneka hitamo igisubizo mbere yo kohereza.");
+            return;
+        }
+
+        const pollData = {
+            question: question,
+            selectedOption: selectedOption.value
+        };
+
+        console.log("Poll Data to Send:", pollData);
+        alert("Poll yoherejwe neza!");
+    }
+
+    // Fungura ikibazo muri results iyo bakanze "Ask"
+    document.getElementById("ask").addEventListener("click", function(event) {
+        event.preventDefault();
+        const question = document.getElementById('edito').innerText.trim();
+        if (question === '') {
+            alert('Nyamuneka andika ikibazo mbere yo kubaza.');
+            return;
+        }
+        document.getElementById("Qsn").textContent = question;
+    });
+
+    // Kwemeza functions muri global scope
+    window.addOption = addOption;
+    window.clearOptions = clearOptions;
+    window.submitPoll = submitPoll;
+});
+
+
+
+document.getElementById("noy").addEventListener("click", function(event) {
+            var sponsorDiv = document.getElementById("sponsorDiv");
+            if (sponsorDiv.style.display === "none" || sponsorDiv.style.display === "") {
+                sponsorDiv.style.display = "block";
+            } else {
+                sponsorDiv.style.display = "none";
+            }
+            event.stopPropagation(); // Kwirinda ko bihita bihishwa ako kanya
+        });
+
+        // Iyo ukandagiye ahandi hose hatari kuri sponsorDiv cyangwa noy, irahisha
+        document.addEventListener("click", function(event) {
+            var sponsorDiv = document.getElementById("sponsorDiv");
+            var noy = document.getElementById("noy");
+            if (event.target !== sponsorDiv && event.target !== noy) {
+                sponsorDiv.style.display = "none";
+            }
+        });
