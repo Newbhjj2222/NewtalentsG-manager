@@ -1715,77 +1715,86 @@ fetchDocumentCount();
 
 // Event listener for the submit button
 document.getElementById("submit").addEventListener("click", async () => {
-    const content = document.getElementById("show").innerText.trim();
-    const videoFile = document.getElementById("video").files[0];
-
-    if (!content || !videoFile) {
-        alert("Andika cyangwa hitamo videwo mbere yo kohereza.");
-        return;
-    }
-
-    // Kwerekana "Loading" percentage
-    const progressBar = document.getElementById("progress-bar");
-    progressBar.style.display = "block";
-
-    // Genza neza ko ari video yemewe
-    const validFileTypes = ["video/mp4", "video/avi", "video/mov", "video/3gp"];
-    if (!validFileTypes.includes(videoFile.type)) {
-        alert("Hitamo videwo yemewe (mp4, avi, mov, 3gp).");
-        progressBar.style.display = "none";
-        return;
-    }
-
-    try {
-        // Gushyira video muri Firebase Storage
-        const storageRef = ref(storage, `videos/${videoFile.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, videoFile);
-
-        // Kwerekana uko kohereza kugenda
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                progressBar.innerText = `Kohereza: ${Math.round(progress)}%`;
-            },
-            (error) => {
-                console.error("Error:", error);
-                alert(`Habaye ikosa: ${error.message}`);
-                progressBar.style.display = "none";
-            },
-            async () => {
-                // Fata URL y'aho video iri muri Storage
-                const videoUrl = await getDownloadURL(uploadTask.snapshot.ref);
-
-                // Kubika mu Firestore
-                await addDoc(collection(db, "shows"), {
-                    content: content,
-                    videoUrl: videoUrl,
-                    createdAt: serverTimestamp(),
-                });
-
-                alert("Ibyo wohereje byakiriwe neza!");
-                document.getElementById("show").innerText = "";
-                document.getElementById("video").value = "";
-                progressBar.style.display = "none";
-            }
-        );
-    } catch (error) {
-        console.error("Error:", error);
-
-        // Kwerekana ikosa mu buryo burambuye
-        const errorMessage = document.getElementById("error-message");
-        if (errorMessage) {
-            errorMessage.innerText = `Habaye ikosa: ${error.message}`;
-            errorMessage.style.display = "block";
-        } else {
-            alert(`Habaye ikosa: ${error.message}`);
+  const content = document.getElementById("show").innerText.trim();
+  const videoFile = document.getElementById("video").files[0];
+  
+  if (!content || !videoFile) {
+    alert("Andika cyangwa hitamo videwo mbere yo kohereza.");
+    return;
+  }
+  
+  // Kwerekana "Loading" percentage
+  const progressBar = document.getElementById("progress-bar");
+  progressBar.style.display = "block";
+  
+  // Genza neza ko ari video yemewe
+  const validFileTypes = ["video/mp4", "video/avi", "video/mov", "video/3gp"];
+  if (!validFileTypes.includes(videoFile.type)) {
+    alert("Hitamo videwo yemewe (mp4, avi, mov, 3gp).");
+    progressBar.style.display = "none";
+    return;
+  }
+  
+  try {
+    // ✅ Gushyira Video muri Cloudinary uko igenda yoherezwa
+    const formData = new FormData();
+    formData.append("file", videoFile);
+    formData.append("upload_preset", "Newtalents"); // 🔥 Subiramo "upload_preset" yawe
+    formData.append("cloud_name", "dilowy3fd"); // 🔥 Subiramo "cloud_name" yawe
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.cloudinary.com/v1_1/dilowy3fd/video/upload", true);
+    
+    // Kwerekana uko percentage igenda yiyongera
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const percent = Math.round((event.loaded / event.total) * 100);
+        progressBar.innerText = `Uploading: ${percent}%`;
+      }
+    });
+    
+    xhr.onload = async () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const data = JSON.parse(xhr.responseText);
+        if (!data.secure_url) {
+          throw new Error("Cloudinary did not return a valid URL.");
         }
-
-        progressBar.style.display = "none";
-    }
+        
+        const videoUrl = data.secure_url; // ✅ URL ya video muri Cloudinary
+        
+        try {
+          // ✅ Kubika mu Firestore
+          await addDoc(collection(db, "shows"), {
+            content: content,
+            videoUrl: videoUrl,
+            createdAt: serverTimestamp(),
+          });
+          
+          alert("Ibyo wohereje byakiriwe neza!");
+          document.getElementById("show").innerText = "";
+          document.getElementById("video").value = "";
+          progressBar.style.display = "none";
+        } catch (firestoreError) {
+          throw new Error(`Firestore error: ${firestoreError.message}`);
+        }
+      } else {
+        throw new Error(`Cloudinary upload failed: ${xhr.status} ${xhr.statusText}`);
+      }
+    };
+    
+    xhr.onerror = () => {
+      alert("Ikosa ribaye mu kohereza video.");
+      progressBar.style.display = "none";
+    };
+    
+    xhr.send(formData);
+    
+  } catch (error) {
+    console.error("Error:", error);
+    alert(`Habaye ikosa: ${error.message}`);
+    progressBar.style.display = "none";
+  }
 });
-
-
 
 // Function yo kwerekana amakuru mu table
 async function displayBanners() {
