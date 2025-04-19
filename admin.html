@@ -1604,15 +1604,39 @@ async function fetchStories() {
 }
 
 // Function for "Read More" button
-window.readMore = function (fullText) {
-  alert(`Full Episode:\n\n${fullText}`);
+window.readMore = function(fullText) {
+  // Dusimbuza zimwe mu tags (nko <p>, <br>, <div>) n’umwanya cyangwa new line
+  let spacedText = fullText
+    .replace(/<\/?(p|br|div|li|h[1-4])[^>]*>/gi, '\n') // Tags zikunda gutandukanya ibice
+    .replace(/<[^>]*>/g, ''); // Dukuramo izindi tags zisigaye
+  
+  alert(`Full Episode:\n${spacedText.trim()}`);
 };
 
 // Function for "Copy" button
-window.copyText = function (text) {
-  // Check if Clipboard API is supported
+window.copyText = function(htmlText) {
+  // 1. Shyira HTML muri div
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlText;
+  
+  // 2. Sukura tags, ubike line breaks n’umwanya uhagije hagati ya paragraph
+  let textWithBreaks = tempDiv.innerHTML
+    .replace(/<br\s*\/?>/gi, "\n\n") // <br> → enter
+    .replace(/<\/p>/gi, "\n\n\n") // </p> → enter ebyiri
+    .replace(/<[^>]+>/g, ""); // Sukura tags zisigaye
+  
+  // 3. Hindura entities nka &nbsp; → space, &amp; → &
+  const decodeEntities = (text) => {
+    const decoder = document.createElement('textarea');
+    decoder.innerHTML = text;
+    return decoder.value;
+  };
+  
+  const cleanText = decodeEntities(textWithBreaks);
+  
+  // 4. Copy to clipboard
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text)
+    navigator.clipboard.writeText(cleanText)
       .then(() => {
         alert("Episode copied to clipboard!");
       })
@@ -1621,13 +1645,13 @@ window.copyText = function (text) {
         alert("Failed to copy. Please try again.");
       });
   } else {
-    // Fallback for older browsers
-    const tempInput = document.createElement("textarea");
-    tempInput.value = text;
-    tempInput.style.position = "absolute";
-    tempInput.style.left = "-9999px";
-    document.body.appendChild(tempInput);
-    tempInput.select();
+    const tempTextarea = document.createElement("textarea");
+    tempTextarea.value = cleanText;
+    tempTextarea.style.whiteSpace = "pre-wrap";
+    tempTextarea.style.position = "absolute";
+    tempTextarea.style.left = "-9999px";
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
     try {
       document.execCommand("copy");
       alert("Episode copied to clipboard!");
@@ -1635,7 +1659,7 @@ window.copyText = function (text) {
       console.error("Failed to copy text:", err);
       alert("Failed to copy. Please try again.");
     }
-    document.body.removeChild(tempInput);
+    document.body.removeChild(tempTextarea);
   }
 };
 // Function for "Delete All" button
