@@ -1543,7 +1543,7 @@ async function fetchStories() {
   try {
     const querySnapshot = await getDocs(collection(db, "stories"));
     const table = document.getElementById("hop");
-
+    
     // Clear the table and add headers
     table.innerHTML = `
       <tr>
@@ -1557,14 +1557,15 @@ async function fetchStories() {
         <th>Actions</th>
       </tr>
     `;
-
+    
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       const episodes = data.episodes || [];
-
+      
       episodes.forEach((episode, index) => {
         const summary = episode.length > 200 ? episode.substring(0, 200) + "..." : episode;
-
+        const encodedEpisode = encodeURIComponent(episode); // Encode to safely embed
+        
         const row = `
           <tr>
             ${index === 0 ? `
@@ -1577,16 +1578,16 @@ async function fetchStories() {
             ` : ""}
             <td>Episode ${index + 1}: ${summary}</td>
             <td>
-            <button onclick="readMore('${episode.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Read more</button>
-            <button onclick="copyText('${episode.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Copy</button>
+              <button onclick="readMore(decodeURIComponent('${encodedEpisode}'))">Read more</button>
+              <button onclick="copyText(decodeURIComponent('${encodedEpisode}'))">Copy</button>
             </td>
           </tr>
         `;
-
+        
         table.innerHTML += row;
       });
     });
-
+    
     // Add Delete All button
     const deleteRow = `
       <tr>
@@ -1596,81 +1597,75 @@ async function fetchStories() {
       </tr>
     `;
     table.innerHTML += deleteRow;
-
+    
   } catch (error) {
     console.error("Error fetching data:", error);
     alert("An error occurred. Please try again.");
   }
 }
 
-// Function for "Read More" button
+// Clean HTML and convert it to readable text
+function cleanHtml(html) {
+  return html
+    .replace(/<\/?(p|div|li|h[1-6]|br)[^>]*>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#039;/gi, "'");
+}
+
 window.readMore = function(fullText) {
-  // Dusimbuza zimwe mu tags (nko <p>, <br>, <div>) n’umwanya cyangwa new line
-  let spacedText = fullText
-    .replace(/<\/?(p|br|div|li|h[1-4])[^>]*>/gi, '\n') // Tags zikunda gutandukanya ibice
-    .replace(/<[^>]*>/g, ''); // Dukuramo izindi tags zisigaye
-  
-  alert(`Full Episode:\n${spacedText.trim()}`);
+  const spacedText = cleanHtml(fullText);
+  alert("Full Episode:\n\n" + spacedText.trim());
 };
 
-// Function for "Copy" button
 window.copyText = function(htmlText) {
-  // 1. Shyira HTML muri div
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = htmlText;
   
-  // 2. Sukura tags, ubike line breaks n’umwanya uhagije hagati ya paragraph
-  let textWithBreaks = tempDiv.innerHTML
-    .replace(/<br\s*\/?>/gi, "\n\n") // <br> → enter
-    .replace(/<\/p>/gi, "\n\n\n") // </p> → enter ebyiri
-    .replace(/<[^>]+>/g, ""); // Sukura tags zisigaye
+  const cleanedText = cleanHtml(tempDiv.innerHTML);
   
-  // 3. Hindura entities nka &nbsp; → space, &amp; → &
-  const decodeEntities = (text) => {
-    const decoder = document.createElement('textarea');
-    decoder.innerHTML = text;
-    return decoder.value;
-  };
-  
-  const cleanText = decodeEntities(textWithBreaks);
-  
-  // 4. Copy to clipboard
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(cleanText)
+    navigator.clipboard.writeText(cleanedText)
       .then(() => {
         alert("Episode copied to clipboard!");
       })
-      .catch((err) => {
+      .catch(err => {
         console.error("Failed to copy text:", err);
         alert("Failed to copy. Please try again.");
       });
   } else {
     const tempTextarea = document.createElement("textarea");
-    tempTextarea.value = cleanText;
+    tempTextarea.value = cleanedText;
     tempTextarea.style.whiteSpace = "pre-wrap";
     tempTextarea.style.position = "absolute";
     tempTextarea.style.left = "-9999px";
     document.body.appendChild(tempTextarea);
     tempTextarea.select();
+    
     try {
       document.execCommand("copy");
       alert("Episode copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy text:", err);
       alert("Failed to copy. Please try again.");
+    } finally {
+      document.body.removeChild(tempTextarea);
     }
-    document.body.removeChild(tempTextarea);
   }
 };
-// Function for "Delete All" button
-window.deleteAllEpisodes = async function () {
+
+window.deleteAllEpisodes = async function() {
   try {
     const querySnapshot = await getDocs(collection(db, "stories"));
-
+    
     for (const doc of querySnapshot.docs) {
       await deleteDoc(doc.ref);
     }
-
+    
     alert("All episodes have been successfully deleted!");
     fetchStories();
   } catch (error) {
@@ -1678,7 +1673,6 @@ window.deleteAllEpisodes = async function () {
     alert("An error occurred while deleting episodes. Please try again.");
   }
 };
-
 
 fetchStories();
 
